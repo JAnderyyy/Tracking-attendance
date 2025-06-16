@@ -29,9 +29,14 @@ class AttendanceApp:
         self.name_entry = Entry(self.root)
         self.name_entry.grid(row=1, column=0, padx=5, pady=5)
         self.name_entry.insert(0, "Имя")
+        self.name_entry.bind("<FocusIn>", self.clear_name_entry)
+        self.name_entry.bind("<FocusOut>", self.restore_name_entry)
+
         self.last_name_entry = Entry(self.root)
         self.last_name_entry.grid(row=1, column=1, padx=5, pady=5)
         self.last_name_entry.insert(0, "Фамилия")
+        self.last_name_entry.bind("<FocusIn>", self.clear_last_name_entry)
+        self.last_name_entry.bind("<FocusOut>", self.restore_last_name_entry)
 
         add_button = Button(self.root, text="Добавить", command=self.add_person)
         add_button.grid(row=1, column=2, padx=5, pady=5)
@@ -46,7 +51,27 @@ class AttendanceApp:
         reset_button.grid(row=2, column=2, padx=5, pady=10)
 
         self.root.rowconfigure(0, weight=1)
-        self.root.columnconfigure([0,1,2], weight=1)
+        self.root.columnconfigure([0, 1, 2], weight=1)
+
+    def clear_name_entry(self, event):
+        if self.name_entry.get() == "Имя":
+            self.name_entry.delete(0, END)
+            self.name_entry.config(fg='black')
+
+    def restore_name_entry(self, event):
+        if not self.name_entry.get():
+            self.name_entry.insert(0, "Имя")
+            self.name_entry.config(fg='grey')
+
+    def clear_last_name_entry(self, event):
+        if self.last_name_entry.get() == "Фамилия":
+            self.last_name_entry.delete(0, END)
+            self.last_name_entry.config(fg='black')
+
+    def restore_last_name_entry(self, event):
+        if not self.last_name_entry.get():
+            self.last_name_entry.insert(0, "Фамилия")
+            self.last_name_entry.config(fg='grey')
 
     def add_person(self):
         name = self.name_entry.get().strip()
